@@ -1,11 +1,11 @@
+require(__dirname + '/player.js');
+
 MainView = class extends React.Component {
 
     render() {
-         return (
-            <p>foo</p>
-        );
+        return React.createElement(MediaPlayer, null);
     }
 
-}
+};
 
 exports.MainView = MainView;

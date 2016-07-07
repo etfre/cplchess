@@ -1,8 +1,7 @@
 window.components = {};
 
-require(__dirname + '/app/lib/mainview.js');
-console.log(__dirname);
+require(__dirname + '/app/lib/components/mainview.js');
 
 window.onload = function () {
-    ReactDOM.render(MainView(), document.getElementById('main-view'));
+    ReactDOM.render(React.createElement(MainView, null), document.getElementById('main-view'));
 };
