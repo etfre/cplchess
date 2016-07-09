@@ -4,7 +4,7 @@ MainView = class extends React.Component {
 
     render() {
          return (
-            <TrackViewer />
+            <TrackViewer tracks={this.props.tracks} />
         );
     }
 
