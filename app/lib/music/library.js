@@ -1,5 +1,6 @@
 fs = require('fs');
 path = require('path');
+jsmediatags = require('jsmediatags');
 Track = require(__dirname + '/track.js');
 
 MEDIA_ROOT = __dirname + '/../../../user/media';
@@ -16,7 +17,6 @@ function walk(currentDirPath, callback) {
         }
         let promisesResolved = 0;
         let p = new Promise((resolve, reject) => {
-            console.log(this);
             let check = function () {
                 if (promisesResolved < files.length) {}
             };
@@ -51,8 +51,21 @@ function getFiles(dir, files_) {
 module.exports.readTracks = function (cb) {
     let files = getFiles(MEDIA_ROOT);
     let tracks = [];
-    for (fName of files) {
-        tracks.push(new Track(fName));
-    }
-    return tracks;
+    let readCount = 0;
+    files.forEach(function (path) {
+        jsmediatags.read(path, {
+            onSuccess: function (tag) {
+                readCount++;
+                let track = new Track(path);
+                track.loadTags(tag.tags);
+                tracks.push(track);
+                if (readCount === files.length) cb(tracks);
+            },
+            onError: function (error) {
+                readCount++;
+                console.log(':(', error.type, error.info);
+                if (readCount === files.length) cb(tracks);
+            }
+        });
+    });
 };

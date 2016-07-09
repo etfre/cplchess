@@ -4,8 +4,11 @@ require(__dirname + '/app/lib/components/mainview.js');
 require(__dirname + '/app/lib/player.js');
 const library = require(__dirname + '/app/lib/music/library.js');
 
+function render(tracks) {
+    ReactDOM.render(React.createElement(MainView, { tracks: tracks }), document.getElementById('main-view'));
+}
+
 window.onload = function () {
     window.trackPlayer = new TrackPlayer();
-    let tracks = library.readTracks();
-    ReactDOM.render(React.createElement(MainView, { tracks: tracks }), document.getElementById('main-view'));
+    library.readTracks(render);
 };
